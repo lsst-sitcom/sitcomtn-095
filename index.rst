@@ -17,6 +17,8 @@ Linked with: SITCOM-798
 
 This is the technote for the settling time after a slew  analysis on the TMA with M1M3. We measured the mirror cell settling time (position and rotation) after a slew. 
 
+Currently the test is PASSED but under non-nominal conditions (50% speed of slew). The IMS repeatability and precision are measured on a specific data set and the requirements for it are PASSED too.
+
 Requirements
 ------------
 
@@ -26,6 +28,8 @@ Related SITCOM tickets
 ======================
 
 SITCOM-798: `M1M3 - Settling time after a slew <https://jira.lsstcorp.org/browse/SITCOM-798>`__
+
+LVV-11258: `LTS-88-REQ-0051-V-01: 3.12.1.5 Settling Time After a Slew_1 <https://jira.lsstcorp.org/browse/LVV-11258>`__
 
 
 SITCOM-798: M1M3 - Settling time after a slew
@@ -153,7 +157,14 @@ yRotation 1.32e-06 degrees
 
 zRotation 7.76e-07 degrees
 
-Which verifies the repeatability (precision) requirements 0128 and 0129. Also the sampling rate 0131 is verified with data at 40 Hz. According to data recovered from EFD, the positional data has a resolution of 0.01 micro m and 1e-6 degrees.￼
+Which verifies the repeatability (precision) requirements 0128 and 0129. Also the sampling rate 0131 is verified with data at 40 Hz. According to data recovered from EFD, the positional data has a resolution of 0.01 micro m and 1e-6 degrees.
+
+Conclusions
+===========
+
+The requirement is passed in all 6 variables but in restrained conditions (50% speed) which are not nominal, so final test is TBD.
+
+The M1M3 system IMS passes the repeatability and precision requirements.
 
 Related documents
 =================
