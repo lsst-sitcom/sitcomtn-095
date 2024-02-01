@@ -13,11 +13,11 @@
 Abstract
 ========
 
-Linked with: SITCOM-798
+Linked with: SITCOM-798 
 
 This is the technote for the settling time after a slew  analysis on the TMA with M1M3. We measured the mirror cell settling time (position and rotation) after a slew. 
 
-Currently the test is PASSED but under non-nominal conditions (50% speed of slew). The IMS repeatability and precision are measured on a specific data set and the requirements for it are PASSED too.
+Currently the test fails marginally looking at movements for a 4 hour long soak test. The IMS repeatability and precision are measured on a specific data set and the requirements for it are PASSED too.
 
 Requirements
 ------------
@@ -27,7 +27,7 @@ Requirements
 Related SITCOM tickets
 ======================
 
-SITCOM-798: `M1M3 - Settling time after a slew <https://jira.lsstcorp.org/browse/SITCOM-798>`__
+SITCOM-1172: `M1M3 - analyze settling times after a slew statistically  <https://jira.lsstcorp.org/browse/SITCOM-1172>`__
 
 LVV-11258: `LTS-88-REQ-0051-V-01: 3.12.1.5 Settling Time After a Slew_1 <https://jira.lsstcorp.org/browse/LVV-11258>`__
 
@@ -56,19 +56,20 @@ micrometers that measure the displacement of the M1M3 mirror
 with respect to the cell. According to LTS-88 it has a 4 um
 accuracy in XYZ and 3e-5 degree accuracy in RXRYRZ. 
 
+
+
 Test Data
 ---------
-*Looked for suitable cases in Rubin TV. TBD a systematic search for those cases closest to the requirement settings (3.5 degree slew at full speed, not reached yet as far as I know as of 240823).*
 
-- dayObs = 2023-06-27
-- seqNo = 450
-- Duration = 5s
-- Azimuth only 3.5 degree slew
-
-See `RubinTV <https://roundtable.lsst.codes/rubintv-dev/summit/tma/historical/2023-06-27>`__
+- dayObs = 2023-12-20
+- block = 146, soak tests (operations like)
+- selected all events of type = SLEW ending in TRACKING, a total of 227 events
 
 Results
 -------
+
+Out of the 227 events, 167 had at least
+
 IMS XYZ position with azimuth and elevation reference. Vertical line denotes reference time (slew stop):
 
 
