@@ -32,8 +32,8 @@ SITCOM-1172: `M1M3 - analyze settling times after a slew statistically  <https:/
 LVV-11258: `LTS-88-REQ-0051-V-01: 3.12.1.5 Settling Time After a Slew_1 <https://jira.lsstcorp.org/browse/LVV-11258>`__
 
 
-SITCOM-798: M1M3 - Settling time after a slew
-=============================================
+SITCOM-1172: M1M3 - Analyze settling times after a slew statistically
+=====================================================================
 
 Requirement verified
 --------------------
@@ -55,8 +55,6 @@ Independent Measurement System, a set of electronic
 micrometers that measure the displacement of the M1M3 mirror
 with respect to the cell. According to LTS-88 it has a 4 um
 accuracy in XYZ and 3e-5 degree accuracy in RXRYRZ. 
-
-
 
 Test Data
 ---------
