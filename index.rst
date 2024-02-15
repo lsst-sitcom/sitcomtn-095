@@ -32,8 +32,8 @@ SITCOM-1172: `M1M3 - analyze settling times after a slew statistically  <https:/
 LVV-11258: `LTS-88-REQ-0051-V-01: 3.12.1.5 Settling Time After a Slew_1 <https://jira.lsstcorp.org/browse/LVV-11258>`__
 
 
-SITCOM-798: M1M3 - Settling time after a slew
-=============================================
+SITCOM-1172: M1M3 - Analyze settling times after a slew statistically
+=====================================================================
 
 Requirement verified
 --------------------
