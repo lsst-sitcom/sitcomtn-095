@@ -13,8 +13,6 @@
 Abstract
 ========
 
-Linked with: SITCOM-798 
-
 This is the technote for the settling time after a slew  analysis on the TMA with M1M3. We measured the mirror cell settling time (position and rotation) after a slew. 
 
 Currently the test fails marginally looking at movements for a 4 hour long soak test. The IMS repeatability and precision are measured on a specific data set and the requirements for it are PASSED too.
@@ -26,6 +24,8 @@ Requirements
 
 Related SITCOM tickets
 ======================
+
+SITCOM-798: `M1M3 - settling time after a slew  <https://jira.lsstcorp.org/browse/SITCOM-798>`__
 
 SITCOM-1172: `M1M3 - analyze settling times after a slew statistically  <https://jira.lsstcorp.org/browse/SITCOM-1172>`__
 
@@ -55,8 +55,6 @@ Independent Measurement System, a set of electronic
 micrometers that measure the displacement of the M1M3 mirror
 with respect to the cell. According to LTS-88 it has a 4 um
 accuracy in XYZ and 3e-5 degree accuracy in RXRYRZ. 
-
-
 
 Test Data
 ---------
