@@ -83,6 +83,9 @@ The time in which the system settles is defined here as the last time the M1M3 I
 
 It looks like at 5 seconds after the slew start, in several events the IMS yPosition value is still drifting towards its settle position. There are also some specific cases for yRotation failures. This is the distribution of the events in azimuth and elevation, highlighting specifically where the yRotation and yPosition failures happen. There is a general tendency associated with slews happening at elevationsgreater than 60 degrees.
 
+.. figure:: /_static/azel.png
+   :name: fig-azel
+
 Some examples of the yPosition bias drift, that usually just fail above the 5 s mark.
 
 .. figure:: /_static/yposition_94.png
