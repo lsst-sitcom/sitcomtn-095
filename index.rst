@@ -13,11 +13,9 @@
 Abstract
 ========
 
-Linked with: SITCOM-798
-
 This is the technote for the settling time after a slew  analysis on the TMA with M1M3. We measured the mirror cell settling time (position and rotation) after a slew. 
 
-Currently the test is PASSED but under non-nominal conditions (50% speed of slew). The IMS repeatability and precision are measured on a specific data set and the requirements for it are PASSED too.
+Currently the test fails marginally looking at movements for a 4 hour long soak test. The IMS repeatability and precision are measured on a specific data set and the requirements for it are PASSED too.
 
 Requirements
 ------------
@@ -27,12 +25,14 @@ Requirements
 Related SITCOM tickets
 ======================
 
-SITCOM-798: `M1M3 - Settling time after a slew <https://jira.lsstcorp.org/browse/SITCOM-798>`__
+SITCOM-798: `M1M3 - settling time after a slew  <https://jira.lsstcorp.org/browse/SITCOM-798>`__
+
+SITCOM-1172: `M1M3 - analyze settling times after a slew statistically  <https://jira.lsstcorp.org/browse/SITCOM-1172>`__
 
 LVV-11258: `LTS-88-REQ-0051-V-01: 3.12.1.5 Settling Time After a Slew_1 <https://jira.lsstcorp.org/browse/LVV-11258>`__
 
 
-SITCOM-798: M1M3 - Settling time after a slew
+Statistical analysis of settling time of M1M3
 =============================================
 
 Requirement verified
@@ -50,121 +50,65 @@ Test Case
 
 Plot the settling time of the M1M3 for X, Y, Z, RX, RY, and RZ.
 
-The data comes from the EFD: imsData. The IMS is the
+The data comes from the EFD: MTM1M3.imsData. The IMS is the
 Independent Measurement System, a set of electronic
 micrometers that measure the displacement of the M1M3 mirror
 with respect to the cell. According to LTS-88 it has a 4 um
 accuracy in XYZ and 3e-5 degree accuracy in RXRYRZ. 
 
+We also use azimuth and elevation data from MTMount.azimuth and MTMount.elevation. 
+
 Test Data
 ---------
-*Looked for suitable cases in Rubin TV. TBD a systematic search for those cases closest to the requirement settings (3.5 degree slew at full speed, not reached yet as far as I know as of 240823).*
 
-- dayObs = 2023-06-27
-- seqNo = 450
-- Duration = 5s
-- Azimuth only 3.5 degree slew
-
-See `RubinTV <https://roundtable.lsst.codes/rubintv-dev/summit/tma/historical/2023-06-27>`__
+- dayObs = 2023-12-20
+- block = 146, soak tests (operations like)
+- selected all events of type = SLEW ending in TRACKING, a total of 226 events
 
 Results
 -------
-IMS XYZ position with azimuth and elevation reference. Vertical line denotes reference time (slew stop):
 
+Out of 223 events (some events were identified as not properly being of the type we are interested in), around 130 had at least one failure, defined as one of the position or rotation columns from the IMS being above the repeatability requirement for the IMS at any point between the 5 second mark after the slew start, and 20 seconds after it (checked for RMS and bias).
 
-.. figure:: /_static/xyz_vs_azel.png
-   :name: fig-xyzvsazel
+.. figure:: /_static/nb_failures.png
+   :name: fig-nb_failures
 
-   IMS XYZ during the slew, compared to azimuth and elevation from mount information. 
+The time in which the system settles is defined here as the last time the M1M3 IMS statistics (mean, RMS) misses the requirement in the 20 second window after the slew start. This is shown below for position and rotation. 
 
-RXRYRZ rotation with azimuth and elevation reference. Vertical line denotes reference time (slew stop):
+.. figure:: /_static/settletime_position_xyz.png
+   :name: fig-settle_position_xyz
 
-.. figure:: /_static/rxryrz_vs_azel.png
-   :name: fig-rxryrzvsazel
+.. figure:: /_static/settletime_rotation_xyz.png
+   :name: fig-settle_rotation_xyz
 
-   IMS RXRYRZ during the slew, compared to azimuth and elevation from mount information.
+It looks like at 5 seconds after the slew start, in several events the IMS yPosition value is still drifting towards its settle position. There are also some specific cases for yRotation failures. This is the distribution of the events in azimuth and elevation, highlighting specifically where the yRotation and yPosition failures happen. There is a general tendency associated with slews happening at elevationsgreater than 60 degrees.
 
-Settling behavior from the IMS measurements. IMS values during and after slew, with RMS behavior with respect to end of the plot, with a 3 second requirement window .
+.. figure:: /_static/azel.png
+   :name: fig-azel
 
-.. figure:: /_static/xsettle.png
-   :name: fig-xsettle
+Some examples of the yPosition bias drift, that usually just fail above the 5 s mark.
 
-   IMS x residual compared to value at slew stop, RMS, in mm.
+.. figure:: /_static/yposition_94.png
+   :name: fig-yposition_94
 
-.. figure:: /_static/ysettle.png
-   :name: fig-ysettle
+.. figure:: /_static/yposition_127.png
+   :name: fig-yposition_127
 
-   IMS y residual compared to value at slew stop, RMS, in mm.
+The yRotation bias failures also exhibit similar drifts, with adjustments to settling peaking at 6.5 seconds after slew start.
 
-.. figure:: /_static/zsettle.png
-   :name: fig-zsettle
+.. figure:: /_static/yrotation_94.png
+   :name: fig-yrotation_94
 
-   IMS z residual compared to value at slew stop, RMS, in mm.
+If we remove the condition of the *bias* going above the requirement, and just focus on the jitter (RMS), the number of failures is smaller.
 
-.. figure:: /_static/xrotsettle.png
-   :name: fig-xrotsettle
+.. figure:: /_static/nb_failures_nobias.png
+   :name: fig-nb_failures_nobias
 
-   IMS rotation in x residual compared to value at slew stop, RMS, in degrees.
-
-.. figure:: /_static/yrotsettle.png
-   :name: fig-yrotsettle
-
-   IMS rotation in y residual compared to value at slew stop, RMS, in degrees.
-
-.. figure:: /_static/zrotsettle.png
-   :name: fig-zrotsettle
-
-   IMS rotation in z residual compared to value at slew stop, RMS, in degrees.
-
-Additional verification
------------------------
-
-Requirements
-^^^^^^^^^^^^
-
-**LTS-88-REQ-0128**: The IMS shall be able to measure the position of the mirror relative to the
-mirror cell to an accuracy of +/- 4 micro m, repeatability of +/- 2 micro m and a resolution of
-+/- 0.5 micro m in all three directions.
-
-**LTS-88-REQ-0129**: The IMS SHALL have a minimum rotational accuracy of +/- 6 e-5 degrees,
-repeatability of +/- 3 e-5 degrees and a resolution of +/- 8 e-6 degrees about all three axes.
-
-**LTS-88-REQ-0131**: The IMS sampling rate SHALL be at least 5 Hz.
-
-Test Data
-^^^^^^^^^
-*Looked for a sample range with visually stable behaviour between two slews.*
-
-- dayObs = 2023-07-18
-- time between UTC 05:03:00 and 05:03:30
-- Duration = 30s
-- Motion status TBC
-
-Results
-^^^^^^^
-
-Calculated numpy.std over all measurements in range, for the six columns. Results are:
-
-xPosition 1.10e-03 microns
-
-yPosition 1.94e-01 microns
-
-zPosition 5.63e-02 microns
-
-xRotation 7.78e-07 degrees
-
-yRotation 1.32e-06 degrees
-
-zRotation 7.76e-07 degrees
-
-Which verifies the repeatability (precision) requirements 0128 and 0129. Also the sampling rate 0131 is verified with data at 40 Hz. According to data recovered from EFD, the positional data has a resolution of 0.01 micro m and 1e-6 degrees.
 
 Conclusions
 ===========
 
-The requirement is passed in all 6 variables but in restrained conditions (50% speed) which are not nominal, so final test is TBD.
-
-The M1M3 system IMS passes the repeatability and precision requirements.
+The requirement is failed using a threshold of 5 seconds after slew start due to a failure in the yPosition and yRotation columns predominantly, due to a slow drift of the cell. However, in a large majority of  cases settling happens in < 2 s later and just barely misses the requirement for the system. NB that we have included RMS *and* bias of the IMS value, despite not being strictly the specification, as we considered it relevant to highlight these slow drifts that may not incur in any jittering at all.
 
 Related documents
 =================
